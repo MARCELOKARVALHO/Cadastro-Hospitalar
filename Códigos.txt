@@ -1,0 +1,447 @@
+
+package cadastro.hospitalar.git.principal;
+ 
+import cadastro.hospitalar.git.controle.ProjetoDAO;
+import cadastro.hospitalar.git.controle.ProjetoImpl;
+import cadastro.hospitalar.git.exceptions.DadoConsultadoException;
+import cadastro.hospitalar.git.modelo.Projeto;
+ 
+import java.text.ParseException;
+import java.util.InputMismatchException;
+import java.util.Scanner;
+ 
+public class Principal {
+    
+    public static void main(String[] args) {
+        
+        ProjetoDAO dao = new ProjetoImpl();
+               
+        
+        int opcao;
+        do{
+            System.out.println("\n----------- REGISTRO DE PROJETOS -----------\n\nEscolha o número da opção desejada:\n");
+            System.out.println("Opção 1 - Cadastro de Internação");
+            System.out.println("Opção 2 - Listar ");
+            System.out.println("Opção 3 - Localizar por nome");
+            System.out.println("Opção 4 - Alta de Internação");
+             System.out.println("Opção 0 - Sair do programa\n");
+            System.out.println("Digite a opção escolhida:  \n");
+            
+            Scanner scannerMenu = new Scanner(System.in);
+            opcao = scannerMenu.nextInt();
+                  if((opcao>5) || (opcao<0))
+                        System.out.println("\n************** OPÇÃO INVÁLIDA!***************\n\nDigite apenas um número dentre as opções apresentadas.");
+            
+           try {
+                switch (opcao){
+                    case 1:
+                        Projeto projeto = new Projeto();
+System.out.println("-------- HOSPITAL UNIVERSITÁRIO --------");
+                        projeto.setNome(coletarTexto("\nDigite o nome do Paciente:"));
+                        projeto.setTiposang(coletarTexto("Digite o tipo sanguineo:")); 
+                        projeto.setConvenio(coletarTexto("Tecle ENTER para escolher a opção do Convenio:"));
+                        projeto.setProcedimento(coletarTexto("Tecle ENTER para escolher a opção do Procedimento:"));
+
+                        dao.adicionar(projeto);
+                        break;
+                    case 2:
+                  
+                        System.out.println(dao.listar());
+                        break;
+                        
+                    case 3:
+
+                        String nomeConsultado = coletarTexto("\nDigite o nome do paciente que está buscando.");
+                        Projeto projetoEncontrado = dao.consultarPorNome(nomeConsultado);
+                        System.out.println(projetoEncontrado);
+                        break;
+
+                    case 4:
+
+                        String nomeConsultaExcluir = coletarTexto("\nDigite o nome do paciente que está recebendo alta.");
+                        dao.excluir(nomeConsultaExcluir);
+                        break;
+                    
+                    case 0:
+                        break;
+                }
+            
+            } catch (InputMismatchException e){
+                System.out.println("********* Não foi possível registrar corretamente a sua opção.*********");
+             } catch (DadoConsultadoException e) {
+                System.out.println(e.getMessage());
+            }
+            
+            }while (opcao!=0);
+              coletarTexto("-------------------------------------------------------");        
+    }
+ 
+    private static String coletarTexto(String descricao){
+        Scanner scanner = new Scanner(System.in);
+        System.out.println(descricao);
+        return scanner.nextLine();
+    }
+}
+
+
+
+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------
+package cadastro.hospitalar.git.modelo;
+ 
+import java.text.ParseException;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.util.Objects;
+import java.util.Scanner;
+
+public class Projeto {
+ 
+    private String nome;
+    private String tiposang;
+    private String convenio;
+    private String procedimento;
+    private String nomebebe;
+public String nomemae = nome;
+private String sanguern;
+private String nenem;
+      private int cod = 0;
+      private int codp = 0;
+      private final String v1= "Unisaude";
+      private final String v2= "Saude e compania";
+      private final String v3="Saúde dez";
+      private final String p1= "Cirurgia";
+      private final String p2= "Parto";
+      private double peso = 0;
+      private double altura = 0;
+   
+     
+
+    public String getNome() {
+        return nome;
+    }
+ 
+    public void setNome(String nome) {
+        this.nome = nome;
+    }
+ 
+    public String getTiposang() {
+        return tiposang;
+    }
+ 
+    public void setTiposang(String tiposang) {
+        this.tiposang = tiposang;
+    }
+ 
+    public String getConvenio() {
+        return convenio;
+    }
+ 
+    public void setConvenio(String convenio) {
+
+System.out.println("\nDigite o tipo de convênio do paciente: ");
+            System.out.println("\nOpção 1- Unisaúde\nOpção 2- Saúde e compania\nOpção 3- Saúde dez \n"); 
+do{
+        Scanner scannerMenu = new Scanner(System.in);
+            cod = scannerMenu.nextInt();
+       
+            if(cod==1)       
+           {  this.convenio = v1; System.out.println("Convênio: Unisaúde\n-----------------------------"); } 
+            if(cod==2)       
+           {  this.convenio = v2; System.out.println("\nConvênio: Saúde e compania\n-----------------------------"); } 
+            if(cod==3)       
+           {  this.convenio = v3; System.out.println("\nConvênio: Saúde Dez\n-----------------------------"); } 
+           
+            if((cod>3) || (cod<1)){            
+            System.out.println("\n************** OPÇÃO INVÁLIDA!***************\n\nDigite a opção correta\n\n  opção 1- Cirurgia\n  opção 2- Parto");
+            }
+        }while(cod>3);          
+            
+      }
+  
+    public String getProcedimento() {
+        return procedimento;
+    }
+
+
+ 
+    public void setProcedimento(String procedimento) {
+               
+        System.out.println("Digite o tipo de procedimento") ;
+        System.out.println("\nOpção 1- CIRURGIA\nOpção 2- PARTO");
+
+         do{
+        Scanner scannerMenu = new Scanner(System.in);
+            codp = scannerMenu.nextInt();
+            if((codp>2) || (codp<1)){            
+            System.out.println("\n************** OPÇÃO INVÁLIDA!***************\n\nDigite a opção correta\n\n  opção 1- Cirurgia\n  opção 2- Parto");
+            }
+       
+            if(codp==1)       
+           {  this.procedimento = p1; 
+            System.out.println("Tipo de Procedimento escolhido: CIRURGIA\n-----------------------------------------\n");
+            System.out.println("       Cadastro concluído com sucesso!\n\n"); 
+           } 
+
+            if(codp==2)       
+           {  this.procedimento = p2; 
+            System.out.println("\nTipo de Procedimento escolhido: PARTO\n-------------------------------------------------\n"); 
+          
+            System.out.println("\n  Prossiga com o Registro da criança\n");          
+
+            System.out.println("---- Cadastro do Recém nascido -----\n");  
+
+            
+            System.out.println("---------------------------------------");
+            this.nenem = scannerMenu.nextLine();                
+            System.out.println("Digite o nome do bebe: ");
+            this.nenem = scannerMenu.nextLine(); 
+            System.out.println("Digite o tipo sanguíneo do bebe: ");
+            this.sanguern = scannerMenu.nextLine();                
+                           
+            System.out.println("Digite o peso do RN, utilizando vírgula para casas decimais: ");
+             this.peso = scannerMenu.nextDouble();              
+            System.out.println("Digite a altura do RN, utilizando vírgula para casas decimais: ");
+            this.altura = scannerMenu.nextDouble(); 
+        System.out.println("Nome da mãe: " + nome + "\n");
+        System.out.println("Convênio: " + convenio + "\n"); 
+            
+            System.out.println("----------------------------------------\n"); 
+            } 
+
+            
+                      
+        }while(codp>2);          
+
+      }
+
+
+ /*   @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Projeto projeto = (Projeto) o;
+        return Objects.equals(nome, projeto.nome);
+    }
+ 
+    @Override
+    public int hashCode() {
+        return Objects.hash(nome);
+    }  */
+ 
+    public Projeto copia() {
+        Projeto projeto = new Projeto();
+        projeto.setNome(this.nome);
+        projeto.setTiposang(this.tiposang);
+        projeto.setConvenio(this.convenio);
+        projeto.setProcedimento(this.procedimento);
+        return projeto;
+    }
+ 
+    public void substituir(Projeto projetoNovo) {
+        
+        this.setNome(projetoNovo.getNome());
+        this.setTiposang(projetoNovo.getTiposang());
+        this.setConvenio(projetoNovo.getConvenio());
+        this.setProcedimento(projetoNovo.getProcedimento());
+    }
+ 
+    @Override
+    public String toString() {
+if(codp==1)
+        return "\nPaciente: \n\n" +
+                "Nome: " + nome + "\n" +
+                "Tipo Sanguíneo: " + tiposang + "\n" +
+                "Convênio: " + convenio + "\n" +
+                "Procedimento: " + procedimento + "\n-----------------------------\n\n"; 
+  if(codp==2)
+               return "\nPaciente: \n\n" +
+                "Nome: " + nome + "\n" +
+                "Tipo Sanguíneo: " + tiposang + "\n" +
+                "Convênio: " + convenio + "\n" +
+                "Procedimento: " + procedimento + "\n\n" +
+                "Nome da criança: " + nenem + "\n" + 
+                "Tipo sanguíneo do bebê: " + sanguern + "\n" +
+                "Convênio do bebe: " + convenio + "\n" +              
+                "Peso: " + peso + "\n" +
+                "Altura: " + altura + "\n-----------------------------"; 
+        return null;
+        
+     } 
+}
+
+
+---------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+
+package cadastro.hospitalar.git.modelo;
+
+import java.util.Scanner;
+
+
+public class Nascido extends Projeto{
+
+
+
+    
+    private String nome;
+    private String tiposang;
+    public String convenio;
+    private String procedimento;
+    private String nomebebe = "";
+
+      private int cod = 0;
+      private int codp = 0;
+      private final String v1= "unisaude";
+      private final String v2= "saude e compania";
+      private final String v3="saude dez";
+      private final String p1= "Cirurgia";
+      private final String p2= "Parto";
+      private double peso = 0;
+      public double altura = 0;
+      private String sanguern;
+      public String nenem;
+
+/*
+public void imprime(){     
+        System.out.println("Nome: " + getNome());}
+        
+ */
+        
+ public String getNomebebe() {
+        return nomebebe;
+    }
+ 
+    public void setNomebebe(String nomebebe) {
+        this.nomebebe = nomebebe;
+    }
+ 
+public double getPeso() {
+        return peso;
+    }
+ 
+    public void setPeso(double peso) {
+        this.peso = peso;
+    }
+
+public double getAltura() {
+        return altura;
+    }
+ 
+    public void setAltura(double altura) {
+        this.altura = altura;
+    }  
+
+}
+
+
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+
+package cadastro.hospitalar.git.exceptions;
+ 
+public class DadoConsultadoException extends Exception{
+    public DadoConsultadoException(String message) {
+        super(message);
+    }
+}
+
+
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+
+package cadastro.hospitalar.git.controle;
+ 
+import cadastro.hospitalar.git.exceptions.DadoConsultadoException;
+import cadastro.hospitalar.git.modelo.Projeto;
+import java.util.List;
+
+ 
+public interface ProjetoDAO {
+ 
+    void adicionar(Projeto projeto);
+    List<Projeto> listar();
+    Projeto consultarPorNome(String nome) throws DadoConsultadoException;
+    void excluir(Projeto projeto) throws DadoConsultadoException, UnsupportedOperationException;
+    void excluir(String nome) throws DadoConsultadoException, UnsupportedOperationException;
+}
+
+
+----------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+
+package cadastro.hospitalar.git.controle;
+
+ 
+import cadastro.hospitalar.git.exceptions.DadoConsultadoException;
+import cadastro.hospitalar.git.modelo.Projeto;
+import java.util.ArrayList;
+
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+ 
+public class ProjetoImpl implements ProjetoDAO {
+    //Collection que irá armazenar todos os projetos
+    private static final Set<Projeto> projetos = new HashSet<>();
+    
+    
+ 
+    @Override
+    public void adicionar(Projeto projeto) {
+     
+         
+        projetos.add(projeto);
+          
+    }
+ 
+    @Override
+    public List<Projeto> listar() {
+        List<Projeto> projetoList = new ArrayList<>();
+        projetoList.addAll(projetos);
+        return projetoList;
+    
+    }
+ 
+    @Override
+    public Projeto consultarPorNome(String nome) throws DadoConsultadoException {
+        for(Projeto projeto: projetos){
+            if (projeto.getNome().equalsIgnoreCase(nome)){
+                return projeto;
+            }
+        }
+        throw new DadoConsultadoException("\n **** Não existe Paciente com o nome: "+nome);
+    }
+ 
+ 
+     @Override
+    public void excluir(String nome) throws DadoConsultadoException, UnsupportedOperationException {
+       Projeto projeto = consultarPorNome(nome);
+       this.excluir(projeto);
+       
+       
+    }
+
+    @Override
+    public void excluir(Projeto projeto) throws DadoConsultadoException, UnsupportedOperationException {
+        if (projetos.contains(projeto)){
+            projetos.remove(projeto);
+            
+            System.out.println("\n******** Alta do paciente efetuada com sucesso!********");
+         
+            return;
+       }
+         throw new DadoConsultadoException("Paciente escolhido não foi encontrado!");
+    }
+   
+}
+
+
+
+
+  
+ 
+ 
+
+ 
+ 
+ 
